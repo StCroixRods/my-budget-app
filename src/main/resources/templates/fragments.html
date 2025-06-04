@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:fragment="navbarFragment">
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/expenses}" th:classappend="${currentPage == 'expenses' ? 'active' : ''}">Budget Tracker</a>
+    <ul class="navbar-nav me-auto">
+      <li class="nav-item">
+        <span th:if="${currentPage == 'addexpense'}" class="nav-link active">Add Expense</span>
+        <a th:unless="${currentPage == 'addexpense'}" class="nav-link" th:href="@{/addexpense}">Add Expense</a>
+      </li>
+      <li class="nav-item">
+        <span th:if="${currentPage == 'summary'}" class="nav-link active">Expense Summary</span>
+        <a th:unless="${currentPage == 'summary'}" class="nav-link" th:href="@{/summary}">Expense Summary</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<footer class="container-fluid mt-auto py-3 bg-light" th:fragment="footerFragment">
+  <div class="d-flex justify-content between align-items-center">
+    <div class="me-auto"></div>
+    <div class="text-center">
+      <p class="mb-0">&copy; <span th:text="${#dates.year(#dates.createNow())}">2025</span> Hines Budget Tracker</p>
+    </div>
+    <div class="ms-auto">
+     <a href="https://www.linkedin.com/in/hines-harmon-b32253235/" target="_blank" rel="noopener noreferrer">
+      <img th:src="@{images/linkedin.svg}"
+           alt="Linkedin Profile"
+           style="width: 24px; height: 24px; vertical-align: middle;">
+     </a>
+      <a class="ms-2" href="https://github.com/StCroixRods" target="_blank" rel="noopener noreferrer">
+        <img th:src="@{images/github.svg}"
+             alt="Github Profile"
+             style="width: 24px; height: 24px; vertical-align: middle;">
+      </a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

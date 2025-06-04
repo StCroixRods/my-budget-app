@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Expense Summary</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100">
+<div th:replace="~{fragments :: navbarFragment}"></div>
+<div class="container mt-3 mb-4">
+    <div class="text-center mb-1">
+        <h1 class="display-5 fw-semibold">Expense Summary</h1>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+          <div class="card mb-3"> <div class="card-header fw-semibold">
+              Current Month Spending
+          </div>
+              <div class="card-body text-center"> <p class="card-text fs-2 fw-bold" th:text="${#numbers.formatCurrency(currentMonthSum)}">$0.00</p>
+              </div>
+          </div>
+          <div class="card mb-3"> <div class="card-header fw-semibold">
+              All Time Spending
+          </div>
+              <div class="card-body text-center">
+                  <p class="card-text fs-2 fw-bold" th:text="${#numbers.formatCurrency(allTimeSum)}"></p>
+              </div>
+          </div>
+          <div class="card mb-3"> <div class="card-header fw-semibold">
+              Number Of Expenses This Month
+          </div>
+              <div class="card-body text-center"> <p class="card-text fs-2 fw-bold" th:text="${monthNumExpenses}"></p>
+              </div>
+          </div>
+          <div class="card mb-3"> <div class="card-header fw-semibold">
+              Past Month Expenses
+          </div>
+              <div class="card-body text-center"> <p class="card-text fs-2 fw-bold" th:text="${#numbers.formatCurrency(pastMonthExpenses)}"></p>
+              </div>
+          </div>
+          <div class="card mb-3"> <div class="card-header fw-semibold">
+              Expenses Per Day
+          </div>
+              <div class="card-body text-center"> <p class="card-text fs-2 fw-bold" th:text="${#numbers.formatCurrency(expensesPerDay)}"></p>
+              </div>
+          </div>
+          <div class="card mb-3"> <div class="card-header fw-semibold">
+              Change From Past Month
+          </div>
+              <div class="card-body text-center">
+                  <p class="card-text fs-2 fw-bold"
+                     th:text="${monthlyPercentChangeString}"
+                     th:classappend="${rawMonthlyPercentChange == null ? 'text-muted' : (rawMonthlyPercentChange > 0.0 ? 'text-danger' : (rawMonthlyPercentChange < 0.0 ? 'text-success' : 'text-body'))}"></p>
+              </div>
+          </div>
+      </div>
+      <div class="col-md-6">
+          <div class="card mb-4" style="max-height: 400px;">
+              <div class="card-header">
+        <h5 class="mb-0 ">Expenses By Category</h5>
+              </div>
+          <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between align-items-center py-1"
+                  th:each="categoryEntry : ${expensesPerCategory}">
+                  <span th:text="${categoryEntry.key}">Category Name</span>
+                  <span class="badge bg-primary rounded-pill"
+                        th:text="${#numbers.formatCurrency(categoryEntry.value)}">$0.00</span>
+              </li>
+              <li class="list-group-item" th:if="${expensesPerCategory == null || expensesPerCategory.isEmpty()}">
+                  No category spending data for this period.
+              </li>
+          </ul>
+          </div>
+          <div style="width: 100%; max-width: 400px; margin: auto; margin-top: 20px;">
+              <canvas id="categoryPieChart"></canvas>
+          </div>
+      </div>
+  </div>
+</div>
+<div th:replace="~{fragments :: footerFragment}"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js" integrity="sha512-ZwR1/gSZM3ai6vCdI+LVF1zSq/5HznD3ZSTk7kajkaj4D292NLuduDCO1c/NT8Id+jE58KYLKT7hXnbtryGmMg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script th:inline="javascript">
+        const categoryDataFromModel = /*[[${expensesPerCategory}]]*/ {};
+        const categoryLabels = Object.keys(categoryDataFromModel);
+        const categoryAmounts = Object.values(categoryDataFromModel);
+
+       const ctx = document.getElementById('categoryPieChart').getContext('2d');
+
+       const data = {
+           labels: categoryLabels,
+           datasets: [{
+               label: 'Expenses By Category',
+               data: categoryAmounts,
+               backgroundColor: [
+                'rgba(255, 99, 132, 0.7)',   // Red
+                'rgba(54, 162, 235, 0.7)',  // Blue
+                'rgba(255, 206, 86, 0.7)',  // Yellow
+                'rgba(75, 192, 192, 0.7)',  // Green/Teal
+                'rgba(153, 102, 255, 0.7)', // Purple
+                'rgba(255, 159, 64, 0.7)',  // Orange
+                'rgba(255, 20, 147, 0.7)',  // Deep Pink
+                'rgba(0, 250, 154, 0.7)',   // Medium Spring Green
+                'rgba(135, 206, 250, 0.7)'  // Light Sky Blue
+               ],
+               hoverOffset: 4
+           }]
+       };
+
+       const config = {
+           type: 'pie',
+           data: data,
+           options: {
+               responsive: true,
+               plugins: {
+                   legend: {
+                       position: 'top',
+                   },
+                   title: {
+                       display: true,
+                       text: 'Spending Breakdown by Category',
+                       padding: {
+                    top: 10,
+                    bottom: 30 // Increased bottom padding
+                },
+                font: {
+                    size: 22, // Increased font size
+                    weight: 'bold'
+                }
+                   },
+                   tooltip: {
+            callbacks: {
+                label: function(context) {
+                    // 'context.label' for a pie chart is usually the label of the slice (e.g., "FOOD")
+                    let label = context.label || '';
+                    let value = context.raw || 0;
+                    let formattedValue = '$' + Number(value).toFixed(2);
+                    if (label) {
+                        label += ': ';
+                    }
+                    return label + formattedValue;
+                }
+            }
+        }
+               }
+           }
+       };
+    new Chart(ctx, config);
+</script>
+</body>
+</html>
