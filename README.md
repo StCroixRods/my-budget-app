@@ -84,11 +84,12 @@ A web application built using Java and Spring Boot that allows users to track pe
     * The application uses an H2 file-based database. The database file (`budgettracker.mv.db` or similar) will be created in a `/data` directory within the project's root folder upon first run and data entry.
     * The H2 console can be accessed at `http://localhost:8080/h2-console` (JDBC URL should be `jdbc:h2:file:./data/budgettracker`, username `sa`, no password).
 
+
 ## Screenshots
 
-* Example: Main Expense List Page
-* Example: Add Expense Form with Validation
-* Example: Summary Page with Metrics and Pie Chart
+![Screenshot 2025-06-04 at 4 47 28 PM](https://github.com/user-attachments/assets/813cde37-aff0-408a-8db9-dfb17048fced)
+[Screenshot 2025-06-04 at 4 47 54 PM](https://github.com/user-attachments/assets/2a9aee2c-2197-4ef0-9ef1-5df760f26c36)
+![Screenshot 2025-06-04 at 4 48 15 PM](https://github.com/user-attachments/assets/65c08da9-d02a-4ca7-aa65-0421a9bb9304)
 
 ## Future Enhancements (Optional)
 
