@@ -86,10 +86,9 @@ A web application built using Java and Spring Boot that allows users to track pe
 
 
 ## Screenshots
+<img width="1212" alt="Screenshot 2025-06-04 at 4 57 08 PM" src="https://github.com/user-attachments/assets/ce405204-9645-4afd-8111-8da6c85e9a64" />
 
-![Screenshot 2025-06-04 at 4 47 28 PM](https://github.com/user-attachments/assets/813cde37-aff0-408a-8db9-dfb17048fced)
-[Screenshot 2025-06-04 at 4 47 54 PM](https://github.com/user-attachments/assets/2a9aee2c-2197-4ef0-9ef1-5df760f26c36)
-![Screenshot 2025-06-04 at 4 48 15 PM](https://github.com/user-attachments/assets/65c08da9-d02a-4ca7-aa65-0421a9bb9304)
+
 
 ## Future Enhancements (Optional)
 
