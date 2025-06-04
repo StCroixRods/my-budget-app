@@ -64,7 +64,7 @@ A web application built using Java and Spring Boot that allows users to track pe
     * Git installed.
 2.  **Clone the Repository:**
     ```bash
-    git clone [https://github.com/your-github-username/your-repository-name.git](https://github.com/your-github-username/your-repository-name.git) 
+    git clone [https://github.com/StCroixRods/my-budget-app.git](https://github.com/StCroixRods/my-budget-app.git)
     ```
     *(Replace with your actual GitHub repository URL)*
 3.  **Navigate to the Project Directory:**
